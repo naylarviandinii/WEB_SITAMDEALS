@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-   Schema::create('users', function (Blueprint $table) {
-    $table->id('user_id');
-    $table->string('name');
-    $table->string('email')->unique();
-    $table->string('password');
-    $table->enum('role', ['admin', 'kasir', 'pembeli'])->default('pembeli');
+     Schema::create('order_items', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('order_id')->constrained()->onDelete('cascade');
+    $table->foreignId('product_id')->constrained('products', 'product_id');
+    $table->enum('grade', ['A', 'B', 'C']);
+    $table->integer('price');
+    $table->integer('qty');
     $table->timestamps();
 });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('order_items');
     }
 };

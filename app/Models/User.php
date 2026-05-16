@@ -18,32 +18,10 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $primaryKey = 'user_id';
+protected $fillable = ['name', 'email', 'password', 'role'];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+public function carts() { return $this->hasMany(Cart::class, 'user_id', 'user_id'); }
+public function orders() { return $this->hasMany(Order::class, 'user_id', 'user_id'); }
+    
 }

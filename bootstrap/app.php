@@ -10,8 +10,9 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware): void {
-        //
+    // Laravel 11 — bootstrap/app.php
+    ->withMiddleware(function (Middleware $middleware) {
+    $middleware->alias(['auth.check' => \App\Http\Middleware\AuthCheck::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
