@@ -11,15 +11,18 @@ export default {
         extend: {
             colors: {
                 // Palet warna utama SiTamDeals
-                forest: "#0e2118",
-                emerald: "#1a3d2b",
-                gold: "#d4af37",
-                "gold-light": "#f1d592",
-                cream: "#f5f0e8",
+                forest: '#12261C',
+                gold:   '#D4AF37',
+                cream:  '#FFF8DC',
+                sage:   '#4A7C59',
+                leaf:   '#72B88A',
+                black:  '#000000',
             },
             fontFamily: {
                 // Mendaftarkan font Urbanist
                 urbanist: ["Urbanist", ...defaultTheme.fontFamily.sans],
+                // Jika ingin menggunakan font Playfair yang Anda panggil di view:
+                playfair: ["Playfair Display", ...defaultTheme.fontFamily.serif],
             },
         },
     },
