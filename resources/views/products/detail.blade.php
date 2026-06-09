@@ -122,7 +122,7 @@
                         <div id="qty-display" class="font-black text-2xl text-forest">0</div>
                     </div>
                     <button type="button" onclick="changeQty(1)"
-                            class="qty-btn w-10 h-10 bg-sage hover:bg-forest rounded-full flex items-center justify-center font-bold text-white shadow-md">
+                            class="qty-btn w-10 h-10 bg-sage hover:bg-forest rounded-full flex items-center justify-center font-bold text-black shadow-md">
                         <i class="fas fa-plus text-xs"></i>
                     </button>
                 </div>

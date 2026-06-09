@@ -26,4 +26,5 @@ public function history() {
                    ->get();
     return view('orders.history', compact('orders'));
 }
+
 }
