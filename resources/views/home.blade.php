@@ -90,7 +90,6 @@
         @foreach([
             ['🥤', 'Minuman'],
             ['🍚', 'Kebutuhan Pokok'],
-            ['🍪', 'Makanan Ringan'],
             ['🍜', 'Makanan'],
             ['🧂', 'Bumbu Dapur'],
             ['👶', 'Kebutuhan Bayi'],
