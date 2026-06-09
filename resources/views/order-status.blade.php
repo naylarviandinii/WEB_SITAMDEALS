@@ -81,7 +81,7 @@
             
             <a href="/orders/{{ $order->id }}/invoice-customer" target="_blank"
                class="mt-2 inline-flex items-center justify-center gap-2 bg-[#e8c96a] text-[#0e2118] font-bold text-xs uppercase tracking-wider px-8 py-3.5 rounded-xl shadow-md hover:bg-c9a84c transition-all">
-                <i class="fas fa-file-invoice text-[11px]"></i> Lihat & Cetak Invoice
+                <i class="fas fa-file-invoice text-[11px]"></i> Lihat Invoice
             </a>
         </div>
         @else

@@ -72,6 +72,5 @@ Route::middleware(['role'])->group(function () {
         Route::delete('/admin/products/{id}', [AdminProductController::class, 'destroy']);
     });
 Route::get('/orders/{id}/status', [CartController::class, 'showStatus'])->name('orders.status');
-
-
+Route::get('/orders/{id}/invoice-customer', [App\Http\Controllers\KasirOrderController::class, 'invoice'])->name('orders.invoice');
 });
