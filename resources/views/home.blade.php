@@ -78,7 +78,7 @@
 </div>
 
 {{-- ===================================================
-     KATEGORI
+     KATEGORI (Disesuaikan dengan DB)
 ===================================================  --}}
 <section class="py-20 px-[6%] bg-cream">
     <div class="text-center mb-12">
@@ -88,14 +88,14 @@
 
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 max-w-5xl mx-auto">
         @foreach([
-            ['🧴','Susu & Olahan'],
-            ['🍜','Bumbu & Rempah'],
-            ['🧴','Perawatan Diri'],
-            ['🧹','Kebersihan'],
-            ['🍪','Camilan'],
-            ['👶','Kebutuhan Bayi'],
+            ['🥤', 'Minuman'],
+            ['🍚', 'Kebutuhan Pokok'],
+            ['🍪', 'Makanan Ringan'],
+            ['🍜', 'Makanan'],
+            ['🧂', 'Bumbu Dapur'],
+            ['🧼', 'Perawatan Tubuh'],
         ] as [$emoji, $nama])
-        <a href="{{ route('products') }}"
+        <a href="{{ route('products', ['category' => $nama]) }}"
            class="bg-white rounded-2xl p-6 text-center shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100 group">
             <span class="text-3xl mb-3 block group-hover:scale-110 transition-transform duration-300">{{ $emoji }}</span>
             <div class="text-[10px] font-bold text-forest uppercase tracking-wide leading-tight">{{ $nama }}</div>
@@ -103,7 +103,6 @@
         @endforeach
     </div>
 </section>
-
 {{-- ===================================================
      PRODUK TERLARIS
 ===================================================  --}}
