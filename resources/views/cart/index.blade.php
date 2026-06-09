@@ -53,9 +53,9 @@
         <div class="glass-panel rounded-2xl text-center py-20 px-6 shadow-2xl">
             <div class="text-6xl mb-4 select-none">🛒</div>
             <h3 class="text-lg font-bold text-white font-playfair">Wah, keranjangmu masih kosong</h3>
-            <p class="text-white/40 text-xs sm:text-sm mt-1 max-w-sm mx-auto">Yuk, kembali jelajahi katalog produk unggulan SiTamDeals dan temukan penawaran terbaik hari ini.</p>
-            <a href="/products" class="mt-6 inline-block btn-gold px-8 py-3 text-xs font-bold uppercase tracking-wider shadow-md">
-                <i class="fas fa-arrow-left mr-1.5 text-[10px]"></i> Mulai Belanja
+            <p class="text-white/40 text-xs sm:text-sm mt-2 max-w-sm mx-auto">Yuk, kembali jelajahi katalog produk unggulan SiTamDeals dan temukan penawaran terbaik hari ini.</p>
+            <a href="/products" class="mt-8 inline-block btn-gold px-8 py-3 text-xs font-bold uppercase tracking-wider shadow-md">
+                <i class="fas fa-arrow-left mr-1.5= text-[10px]"></i> Mulai Belanja
             </a>
         </div>
     @else
