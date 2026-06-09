@@ -20,7 +20,7 @@ class AuthController extends Controller
         return view('auth.register'); 
     }
 
-    // Proses Login
+   // Proses Login
     public function login(Request $request) 
     {
         // Jalankan validasi input terlebih dahulu
@@ -37,8 +37,17 @@ class AuthController extends Controller
             return back()->withErrors(['email' => 'Email atau password salah'])->withInput();
         }
 
-        // Simpan data user ke session jika login berhasil
-        session(['user' => $user->toArray()]);
+        // ====== KUNCI PERBAIKAN DI SINI ======
+        // Jangan pakai toArray(), kita petakan manual komponennya ke session agar pasti terbaca
+        session([
+            'user' => [
+                'id'    => $user->user_id,
+                'name'  => $user->name,
+                'email' => $user->email,
+                'role'  => $user->role, // Dipaksa masuk ke session array
+            ]
+        ]);
+        // =====================================
 
         // Pengalihan halaman berdasarkan role
         return match($user->role) {

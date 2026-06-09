@@ -12,8 +12,11 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     // Laravel 11 — bootstrap/app.php
     ->withMiddleware(function (Middleware $middleware) {
-    $middleware->alias(['auth.check' => \App\Http\Middleware\AuthCheck::class]);
-    })
+    $middleware->alias([
+        'role' => \App\Http\Middleware\CheckRole::class, // Jika error, ganti ke path lengkapnya:
+        // 'role' => \App\Http\Middleware\CheckRole::class,
+    ]);
+})
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();
