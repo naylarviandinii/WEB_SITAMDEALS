@@ -104,7 +104,7 @@
     </div>
 </section>
 {{-- ===================================================
-     PRODUK TERLARIS
+     PRODUK TERLARIS (CUKUP 3 PRODUK)
 ===================================================  --}}
 <section class="py-20 px-[6%] bg-[#f0f4ee]">
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-12 max-w-5xl mx-auto">
@@ -120,10 +120,11 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
         @forelse($products as $row)
+        {{-- Tetap mengarah ke rute detail produk --}}
         <a href="{{ route('products.detail', $row->product_id) }}"
            class="group bg-white rounded-3xl overflow-hidden hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 border border-gray-100">
 
-            {{-- Gambar --}}
+            {{-- Gambar (Tetap menggunakan folder img) --}}
             <div class="h-56 relative overflow-hidden bg-gray-50">
                 @if($row->image && file_exists(public_path('img/'.$row->image)))
                     <img src="{{ asset('img/'.$row->image) }}"
@@ -161,7 +162,6 @@
         @endforelse
     </div>
 </section>
-
 {{-- ===================================================
      CARA KERJA / SISTEM GRADE
 ===================================================  --}}

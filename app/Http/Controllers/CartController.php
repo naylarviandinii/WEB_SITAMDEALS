@@ -11,41 +11,33 @@ use App\Models\Cart;
 class CartController extends Controller
 {
     /**
-     * 1. MENAMPILKAN HALAMAN KERANJANG (Fungsi yang hilang)
+     * 1. MENAMPILKAN HALAMAN KERANJANG
      */
     public function index()
     {
         $user = session('user');
-        
-        // Antisipasi key session id / user_id
-        $userId = isset($user['id']) ? $user['id'] : (isset($user['user_id']) ? $user['user_id'] : null);
+        $userId = $user['id'] ?? $user['user_id'] ?? null;
 
-        if (!$userId) {
-            return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
-        }
+        if (!$userId) return redirect('/login')->with('error', 'Silakan login.');
 
-        // Ambil semua item keranjang milik user beserta relasi produknya
         $items = Cart::with('product')->where('user_id', $userId)->get();
+        $total = $items->sum(fn($item) => $item->unit_price * $item->qty);
 
-        // Hitung grand total belanjaan untuk dikirim ke view cart
-        $total = $items->sum(function($item) {
-            return $item->unit_price * $item->qty;
-        });
+        // Ambil ID item yang baru dimasukkan lewat "Beli Sekarang" jika ada
+        $buyNowId = session('buy_now_id');
 
-        return view('cart.index', compact('items', 'total'));
+        return view('cart.index', compact('items', 'total', 'buyNowId'));
     }
 
     /**
-     * 2. MENAMBAH PRODUK KE KERANJANG
+     * 2. MENAMBAH KE KERANJANG & BELI SEKARANG
      */
     public function add(Request $request)
     {
         $user = session('user');
-        $userId = isset($user['id']) ? $user['id'] : (isset($user['user_id']) ? $user['user_id'] : null);
+        $userId = $user['id'] ?? $user['user_id'] ?? null;
 
-        if (!$userId) {
-            return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
-        }
+        if (!$userId) return redirect('/login')->with('error', 'Silakan login.');
 
         $request->validate([
             'product_id' => 'required',
@@ -62,42 +54,47 @@ class CartController extends Controller
         if ($existingCart) {
             $existingCart->qty += $request->qty;
             $existingCart->save();
+            $cartId = $existingCart->id;
         } else {
-            Cart::create([
+            $newCart = Cart::create([
                 'user_id'    => $userId,
                 'product_id' => $request->product_id,
                 'grade'      => $request->grade,
                 'qty'        => $request->qty,
                 'unit_price' => $request->unit_price,
             ]);
+            $cartId = $newCart->id;
         }
 
-        return redirect()->back()->with('success', 'Produk berhasil dimasukkan ke keranjang belanja!');
+        // Cek jika request datang dari tombol "Beli Sekarang"
+        if ($request->input('buy_now') == 1) {
+            // Simpan ID keranjang ke dalam session flash untuk dibaca di halaman keranjang
+            return redirect()->route('cart')->with('buy_now_id', $cartId);
+        }
+
+        return redirect()->back()->with('success', 'Produk berhasil dimasukkan ke keranjang!');
     }
 
     /**
-     * 3. PROSES CHECKOUT PESANAN (MASUK KE KASIR)
+     * 3. CHECKOUT PRODUK TERPILIH
      */
-    public function checkout() 
+    public function checkout(Request $request) 
     {
         $user = session('user');
-        $userId = isset($user['id']) ? $user['id'] : (isset($user['user_id']) ? $user['user_id'] : null);
+        $userId = $user['id'] ?? $user['user_id'] ?? null;
 
-        if (!$userId) {
-            return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
+        $selectedItems = $request->input('selected_items', []);
+
+        if (empty($selectedItems)) {
+            return back()->with('error', 'Pilih minimal satu produk untuk di-checkout!');
         }
 
-        $items = Cart::with('product')->where('user_id', $userId)->get();
-        if ($items->isEmpty()) {
-            return back()->with('error', 'Keranjang kosong!');
-        }
+        $items = Cart::with('product')
+                    ->where('user_id', $userId)
+                    ->whereIn('id', $selectedItems)
+                    ->get();
 
-        // Buat order baru dengan status awal pending
-        $order = Order::create// Cari baris ini di fungsi checkout():
-([
-    'user_id' => $userId, 
-    'status'  => 'diterima' 
-]);
+        $order = Order::create(['user_id' => $userId, 'status' => 'diterima']);
         
         foreach ($items as $item) {
             OrderItem::create([
@@ -108,24 +105,40 @@ class CartController extends Controller
                 'qty'        => $item->qty,
             ]);
             
-            // Potong stok gudang ritel sesuai grade
-            $col = 'stock_' . $item->grade;
-            Product::where('product_id', $item->product_id)->decrement($col, $item->qty);
+            Product::where('product_id', $item->product_id)
+                   ->decrement('stock_' . $item->grade, $item->qty);
         }
 
-        // Kosongkan keranjang belanja
-        Cart::where('user_id', $userId)->delete();
+        Cart::where('user_id', $userId)->whereIn('id', $selectedItems)->delete();
 
-        // Oper langsung ke halaman tracking live progress
         return redirect('/orders/' . $order->id . '/status')->with('success', 'Checkout berhasil!');
     }
 
     /**
-     * 4. LIVE TRACKING STATUS PELANGGAN
+     * 4. STATUS TRACKING
      */
     public function showStatus($id)
     {
         $order = Order::findOrFail($id);
         return view('order-status', compact('order'));
+    }
+
+    /**
+     * 5. MENGHAPUS ITEM DARI KERANJANG
+     */
+    public function remove($id)
+    {
+        $user = session('user');
+        $userId = $user['id'] ?? $user['user_id'] ?? null;
+
+        // Mencari item berdasarkan ID dan User ID agar aman
+        $item = Cart::where('id', $id)->where('user_id', $userId)->first();
+
+        if ($item) {
+            $item->delete();
+            return redirect()->back()->with('success', 'Produk berhasil dihapus dari keranjang.');
+        }
+
+        return redirect()->back()->with('error', 'Produk tidak ditemukan.');
     }
 }

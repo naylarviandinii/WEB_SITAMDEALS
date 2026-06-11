@@ -57,7 +57,7 @@
                 Sitam<span class="text-[#c9a84c]">Deals</span>
             </span>
             <span class="inline-flex items-center px-3 py-1 rounded-full bg-white/[0.04] border border-[#c9a84c]/50 text-[#c9a84c] text-[10px] font-bold tracking-[1.5px] uppercase font-sans">
-                ✦ Owner Admin
+                ✦ Admin
             </span>
         </div>
         <form action="/logout" method="POST" class="m-0">

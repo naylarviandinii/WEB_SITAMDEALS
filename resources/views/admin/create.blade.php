@@ -48,6 +48,27 @@
         input[type=number] {
             -moz-appearance: textfield;
         }
+
+        select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 1rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            color: #ffffff !important;
+        }
+
+        select option {
+            background-color: #0a1a12 !important;
+            color: #ffffff !important;
+        }
+        
+        select option:disabled {
+            color: rgba(255, 255, 255, 0.3) !important;
+        }
     </style>
 </head>
 <body class="font-sans min-h-screen py-10 px-4 md:px-8 flex justify-center items-center">
@@ -82,9 +103,9 @@
             </div>
             @endif
 
-            <form method="POST" action="/admin/products" class="space-y-6">
+            <form method="POST" action="/admin/products" enctype="multipart/form-data" class="space-y-6">
                 @csrf
-                
+
                 <div>
                     <label class="block text-xs font-bold tracking-wider uppercase text-white mb-2">Nama Produk</label>
                     <div class="flex items-center w-full bg-[#0A1A12] border border-white/40 rounded-xl px-4 py-3.5 focus-within:border-white transition-all">
@@ -95,11 +116,45 @@
                 </div>
 
                 <div>
+                    <label class="block text-xs font-bold tracking-wider uppercase text-white mb-2">Kategori</label>
+                    <div class="flex items-center w-full bg-[#0A1A12] border border-white/40 rounded-xl px-4 py-3.5 focus-within:border-white transition-all">
+                        <span class="text-white mr-3 flex items-center justify-center"><i class="fas fa-tags"></i></span>
+                        <select name="category" required class="w-full bg-transparent text-base text-white p-2 m-0 border-none outline-none focus:ring-0 focus:outline-none cursor-pointer">
+                            <option value="" disabled {{ old('category') ? '' : 'selected' }}>Pilih kategori produk...</option>
+                            <option value="Minuman" {{ old('category') == 'Minuman' ? 'selected' : '' }}>Minuman</option>
+                            <option value="Kebutuhan Pokok" {{ old('category') == 'Kebutuhan Pokok' ? 'selected' : '' }}>Kebutuhan Pokok</option>
+                            <option value="Makanan" {{ old('category') == 'Makanan' ? 'selected' : '' }}>Makanan</option>
+                            <option value="Bumbu Dapur" {{ old('category') == 'Bumbu Dapur' ? 'selected' : '' }}>Bumbu Dapur</option>
+                            <option value="Kebutuhan Bayi" {{ old('category') == 'Kebutuhan Bayi' ? 'selected' : '' }}>Kebutuhan Bayi</option>
+                            <option value="Perawatan Tubuh" {{ old('category') == 'Perawatan Tubuh' ? 'selected' : '' }}>Perawatan Tubuh</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
                     <label class="block text-xs font-bold tracking-wider uppercase text-white mb-2">Harga Jual (RP)</label>
                     <div class="flex items-center w-full bg-[#0A1A12] border border-white/40 rounded-xl px-4 py-3.5 focus-within:border-white transition-all">
                         <span class="text-white font-sans text-sm font-bold mr-3 select-none">Rp</span>
                         <input type="number" name="price" value="{{ old('price') }}" placeholder="0" required min="0"
                                class="w-full bg-transparent text-base font-sans text-white p-1 m-0 border-none outline-none focus:ring-0 focus:outline-none placeholder-white/30">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold tracking-wider uppercase text-white mb-2">Deskripsi Produk</label>
+                    <div class="flex items-start w-full bg-[#0A1A12] border border-white/40 rounded-xl px-4 py-3.5 focus-within:border-white transition-all">
+                        <span class="text-white mr-3 mt-2 flex items-center justify-center"><i class="fas fa-align-left"></i></span>
+                        <textarea name="description" placeholder="Masukkan deskripsi atau spesifikasi detail produk..." rows="3"
+                                  class="w-full bg-transparent text-base text-white p-2 m-0 border-none outline-none focus:ring-0 focus:outline-none placeholder-white/30 resize-none">{{ old('description') }}</textarea>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold tracking-wider uppercase text-white mb-2">Gambar Produk</label>
+                    <div class="flex items-center w-full bg-[#0A1A12] border border-white/40 rounded-xl px-4 py-3.5 focus-within:border-white transition-all">
+                        <span class="text-white mr-3 flex items-center justify-center"><i class="fas fa-image"></i></span>
+                        <input type="file" name="image" accept="image/*" required
+                               class="w-full bg-transparent text-base text-white p-2 m-0 border-none outline-none focus:ring-0 focus:outline-none file:mr-4 file:py-1 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-white/10 file:text-white hover:file:bg-white/20">
                     </div>
                 </div>
 
@@ -132,12 +187,12 @@
                         </div>
                     </div>
 
-                    <a href="/admin/dashboard" class="btn-batal px-6 py-3.5 text-xs font-bold tracking-wider uppercase text-center transition-all">
+                    <a href="/admin/dashboard" class="btn-batal px-6 py-3.5 text-xs font-bold tracking-wider uppercase text-center transition-all flex items-center justify-center">
                         Batal
                     </a>
                     <button type="submit" class="btn-gold px-8 py-3.5 text-xs flex items-center justify-center gap-2 uppercase tracking-wider shadow-md">
-                    <i class="fas fa-plus text-[10px]"></i> Tambah Produk
-                </button>
+                        <i class="fas fa-plus text-[10px]"></i> Tambah Produk
+                    </button>
                 </div>
             </form>
 

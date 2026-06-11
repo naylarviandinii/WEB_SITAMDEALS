@@ -27,10 +27,11 @@ class ProductController extends Controller
     public function home()
     {
         // Mengambil semua data produk dari database untuk halaman utama
-        $products = Product::all(); 
+        $products = Product::latest()->take(3)->get();
 
         // Mengirim variabel $products ke file view 'home.blade.php'
-        return view('home', compact('products')); 
+        return view('home', compact('products'));
+         
     }
 
     public function show($id) 

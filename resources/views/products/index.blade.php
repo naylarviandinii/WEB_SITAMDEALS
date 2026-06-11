@@ -13,7 +13,7 @@
     <div class="relative z-10">
         <div class="text-[10px] font-bold tracking-[3px] uppercase text-sage mb-3">Tambah Jaya</div>
         <h1 class="font-playfair text-4xl md:text-5xl font-black text-cream mb-3">Katalog Lengkap</h1>
-        <p class="text-mint/60 text-sm tracking-widest uppercase font-semibold">Cari kebutuhanmu di sini</p>
+        <p class="text-cream/60 text-sm tracking-widest uppercase font-semibold">Cari kebutuhanmu di sini</p>
     </div>
 </header>
 

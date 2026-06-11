@@ -33,7 +33,7 @@
                         <span class="text-xs font-bold px-3 py-1 rounded-full uppercase {{ $statusColor }}">
                             {{ ucfirst($order->status) }}
                         </span>
-                        <a href="/invoice/{{ $order->id }}" class="text-sage text-sm font-bold hover:underline">Lihat Invoice →</a>
+                        <a href="invoice/{{ $order->id }}" class="text-sage text-sm font-bold hover:underline">Lihat Invoice →</a>
                     </div>
                 </div>
                 <!-- Item list -->

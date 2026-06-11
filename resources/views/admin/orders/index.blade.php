@@ -8,16 +8,31 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;700&display=swap');
-        body { background-color: #050d09; color: #ffffff; font-family: 'Inter', sans-serif; }
+        body { background-color: #050d09; color: #ffffff; font-family: 'Inter', 'Playfair Display'; }
         .glass-panel { background-color: #0A1A12; border: 1px solid rgba(255, 255, 255, 0.1); }
         .btn-flow-active { background-color: #e8c96a; color: #0e2118; border: 1px solid #e8c96a; font-weight: 700; }
     </style>
 </head>
-<body class="py-10 px-4 md:px-8">
-    <div class="w-full max-w-7xl mx-auto">
-        <div class="mb-8 border-b border-white/10 pb-6">
-            <h2 class="text-4xl font-playfair font-bold">Manajemen Status Pemesanan</h2>
-        </div>
+<body class="py-6 px-4 md:px-8">
+    <nav class="glass-card sticky top-2 z-50 px-6 py-3 flex justify-between items-center border-b border-white/10 shadow-lg">
+    {{-- Sisi Kiri: Logo SitamDeals & Badge Kasir --}}
+    <div class="flex items-center gap-3">
+        <span class="text-2xl font-playfair font-black text-white tracking-wide">
+            SiTam<span class="text-[#c9a84c]">Deals</span>
+        </span>
+        <span class="inline-flex items-center px-3 py-1 rounded-full bg-white/[0.04] border border-[#c9a84c]/50 text-[#c9a84c] text-[10px] font-bold tracking-[1.5px] uppercase font-sans">
+            ✦ Kasir
+        </span>
+    </div>
+
+    {{-- Sisi Kanan: Form Tombol Kelola Logout --}}
+    <form action="/logout" method="POST" class="m-0">
+        @csrf
+        <button type="submit" class="text-sm font-semibold text-white/70 hover:text-rose-400 transition-all flex items-center gap-2 group">
+            <i class="fas fa-sign-out-alt text-xs group-hover:translate-x-1 transition-transform"></i> Keluar
+        </button>
+    </form>
+</nav>
         
         <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl">
             <table class="w-full text-left border-collapse">
@@ -45,8 +60,8 @@
                         </td>
                         <td class="p-5">
                             <div class="flex items-center gap-1 justify-center">
-                                {{-- Loop untuk tombol status dengan form terpisah --}}
-                                @foreach(['diterima' => 'Diterima', 'diproses' => 'Diproses', 'diambil_dibayar' => 'Siap Diambil dan Bayar'] as $key => $label)
+                                {{-- Loop hanya merender 2 tombol status fisik --}}
+                                @foreach(['diterima' => 'Diterima', 'diproses' => 'Diproses'] as $key => $label)
                                     <form method="POST" action="/admin/orders/{{ $order->id }}/update-status">
                                         @csrf @method('PATCH')
                                         <button type="submit" name="status" value="{{ $key }}"
@@ -54,11 +69,17 @@
                                             {{ $label }}
                                         </button>
                                     </form>
-                                    @if(!$loop->last) <i class="fas fa-chevron-right text-white/10 text-[10px]"></i> @endif
+                                    <i class="fas fa-chevron-right text-white/10 text-[10px]"></i>
                                 @endforeach
 
+                                {{-- Form Ambil & Bayar mandiri (hidden secara visual, dipanggil lewat tombol print) --}}
+                                <form method="POST" action="/admin/orders/{{ $order->id }}/update-status" id="form-ambil-{{ $order->id }}">
+                                    @csrf @method('PATCH')
+                                    <input type="hidden" name="status" value="diambil_dibayar">
+                                </form>
+
                                 {{-- Tombol Invoice --}}
-                                <a href="{{ route('orders.invoice', $order->id) }}" target="_blank"
+                                <a href="{{ route('orders.invoice', $order->id) }}" target="_blank" onclick="document.getElementById('form-ambil-{{ $order->id }}').submit();"
                                    class="ml-2 px-3 py-2 rounded-xl text-[10px] font-bold uppercase bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20 transition-all">
                                     <i class="fas fa-print"></i>
                                 </a>

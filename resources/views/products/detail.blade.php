@@ -122,7 +122,7 @@
                         <div id="qty-display" class="font-black text-2xl text-forest">0</div>
                     </div>
                     <button type="button" onclick="changeQty(1)"
-                            class="qty-btn w-10 h-10 bg-sage hover:bg-forest rounded-full flex items-center justify-center font-bold text-black shadow-md">
+                            class="qty-btn w-10 h-10 bg-sage hover:bg-forest rounded-full flex items-center justify-center font-bold text-white shadow-md">
                         <i class="fas fa-plus text-xs"></i>
                     </button>
                 </div>
@@ -132,24 +132,35 @@
                 </div>
             </div>
 
-            {{-- Form: Tambah ke Keranjang --}}
-            <form action="{{ route('cart.add') }}" method="POST" onsubmit="return validateForm()">
+            {{-- Form: Tambah ke Keranjang / Beli Sekarang --}}
+            <form action="{{ route('cart.add') }}" method="POST" id="order-form">
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product->product_id }}">
                 <input type="hidden" name="grade"      id="h-grade">
                 <input type="hidden" name="qty"        id="h-qty" value="0">
                 <input type="hidden" name="unit_price" id="h-unit-price" value="{{ $product->price }}">
+                <input type="hidden" name="buy_now"    id="h-buy-now" value="0">
 
-                <button type="submit"
-                        class="w-full bg-gold text-forest font-black py-4 rounded-2xl shadow-lg hover:bg-yellow-400 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-3 text-base">
-                    <i class="fas fa-cart-plus"></i>
-                    Tambah ke Keranjang
-                    <span id="checkout-qty" class="bg-forest/20 text-xs px-2 py-0.5 rounded-full">0 item</span>
-                </button>
+                <div class="flex flex-col gap-3">
+                    {{-- Button: Tambah ke Keranjang --}}
+                    <button type="submit" onclick="setBuyNow(0)"
+                            class="w-full bg-gold text-forest font-black py-4 rounded-2xl shadow-lg hover:bg-yellow-400 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-3 text-base">
+                        <i class="fas fa-cart-plus"></i>
+                        Tambah ke Keranjang
+                        <span id="checkout-qty" class="bg-forest/20 text-xs px-2 py-0.5 rounded-full">0 item</span>
+                    </button>
+
+                    {{-- Button: Beli Sekarang --}}
+                    <button type="submit" onclick="setBuyNow(1)"
+                            class="w-full bg-forest text-white font-black py-4 rounded-2xl shadow-lg hover:bg-[#06120d] hover:-translate-y-0.5 transition-all flex items-center justify-center gap-3 text-base">
+                        <i class="fas fa-bolt"></i>
+                        Beli Sekarang
+                    </button>
+                </div>
             </form>
 
-            {{-- Tombol Checkout langsung --}}
-            <div class="mt-3 text-center">
+            {{-- Tombol Lihat Keranjang --}}
+            <div class="mt-4 text-center">
                 <a href="{{ route('cart') }}"
                    class="text-xs text-gray-400 hover:text-forest transition font-semibold">
                     <i class="fas fa-shopping-cart mr-1"></i>Lihat Keranjang →
@@ -212,10 +223,22 @@ function changeQty(delta) {
     refreshUI();
 }
 
-function validateForm() {
-    if (!document.getElementById('grade').value) { alert('Pilih Grade dulu!'); return false; }
-    if (qty <= 0) { alert('Qty masih 0!'); return false; }
-    return true;
+function setBuyNow(val) {
+    document.getElementById('h-buy-now').value = val;
 }
+
+document.getElementById('order-form').addEventListener('submit', function(e) {
+    if (!document.getElementById('grade').value) { 
+        alert('Pilih Grade dulu!'); 
+        e.preventDefault(); 
+        return false; 
+    }
+    if (qty <= 0) { 
+        alert('Qty masih 0!'); 
+        e.preventDefault(); 
+        return false; 
+    }
+    return true;
+});
 </script>
 @endpush

@@ -28,6 +28,7 @@ class CheckRole
         }
 
         // 3. JIKA RUTE MEMINTA ROLE SPESIFIK (Contoh: role:kasir atau role:admin)
+        // Tambahkan ini sementara untuk melihat apa yang dibaca sistem
         if (!empty($roles)) {
             // Cek apakah role si user ada di dalam daftar yang diizinkan rute
             if (!in_array($userDb->role, $roles)) {

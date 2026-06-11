@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Product; // Pastikan kamu sudah punya model Product
+use App\Models\Product; 
+use Illuminate\Support\Facades\Storage;
 
 class AdminProductController extends Controller
 {
@@ -23,62 +24,97 @@ class AdminProductController extends Controller
 
     // Prosedur Tambah, Edit, Hapus (CRUD) Produk
     public function create()
-{
-    return view('admin.create');
-}
-
-public function store(Request $request)
-{
-    $request->validate([
-        'name'    => 'required|string|max:255',
-        'price'   => 'required|numeric|min:0',
-        'stock_A' => 'required|integer|min:0',
-        'stock_B' => 'required|integer|min:0',
-        'stock_C' => 'required|integer|min:0',
-    ]);
-
-    Product::create([
-        'name'    => $request->name,
-        'price'   => $request->price,
-        'stock_A' => $request->stock_A,
-        'stock_B' => $request->stock_B,
-        'stock_C' => $request->stock_C,
-    ]);
-
-    return redirect('/admin/dashboard')->with('success', 'Produk baru berhasil ditambahkan!');
-}
-
-public function edit($id)
     {
-        // Pastikan mencari berdasarkan primary key asli kamu
+        return view('admin.create');
+    }
+
+    public function store(Request $request)
+    {
+        // 1. Validasi semua inputan termasuk kolom baru dan file gambar
+        $request->validate([
+            'name'        => 'required|string|max:255',
+            'category'    => 'required|string|in:Minuman,Kebutuhan Pokok,Makanan,Bumbu Dapur,Kebutuhan Bayi,Perawatan Tubuh',
+            'price'       => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+            'image'       => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Batas 2MB
+            'stock_A'     => 'required|integer|min:0',
+            'stock_B'     => 'required|integer|min:0',
+            'stock_C'     => 'required|integer|min:0',
+        ]);
+
+        // 2. Proses upload gambar dan ambil nama asli filenya
+        $imageName = null;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $imageName = $file->getClientOriginalName(); // Mengambil nama file asli pilihan user
+            
+            // Simpan file fisik gambar ke folder public/images
+            $file->move(public_path('images'), $imageName);
+        }
+
+        // 3. Simpan data lengkap ke database
+        Product::create([
+            'name'        => $request->name,
+            'category'    => $request->category,
+            'price'       => $request->price,
+            'description' => $request->description,
+            'image'       => $imageName, // Menyimpan nama file gambar
+            'stock_A'     => $request->stock_A,
+            'stock_B'     => $request->stock_B,
+            'stock_C'     => $request->stock_C,
+        ]);
+
+        return redirect('/admin/dashboard')->with('success', 'Produk baru berhasil ditambahkan!');
+    }
+
+    public function edit($id)
+    {
         $product = Product::findOrFail($id);
         return view('admin.edit', compact('product'));
     }
 
     public function update(Request $request, $id)
     {
-        // 1. Validasi input sesuai dengan kolom database asli
-        $request->validate([
-            'name'    => 'required|string|max:255',
-            'price'   => 'required|numeric|min:0',
-            'stock_A' => 'required|integer|min:0',
-            'stock_B' => 'required|integer|min:0',
-            'stock_C' => 'required|integer|min:0',
-        ]);
-
-        // 2. Cari produknya
         $product = Product::findOrFail($id);
 
-        // 3. Update datanya ke database
-        $product->update([
-            'name'    => $request->name,
-            'price'   => $request->price,
-            'stock_A' => $request->stock_A,
-            'stock_B' => $request->stock_B,
-            'stock_C' => $request->stock_C,
+        // 1. Validasi untuk update data
+        $request->validate([
+            'name'        => 'required|string|max:255',
+            'category'    => 'required|string|in:Minuman,Kebutuhan Pokok,Makanan,Bumbu Dapur,Kebutuhan Bayi,Perawatan Tubuh',
+            'price'       => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Boleh kosong saat edit jika tidak ganti gambar
+            'stock_A'     => 'required|integer|min:0',
+            'stock_B'     => 'required|integer|min:0',
+            'stock_C'     => 'required|integer|min:0',
         ]);
 
-        // 4. Kembalikan ke dashboard dengan pesan sukses
+        // Datanya kita kumpulkan dulu di array
+        $dataToUpdate = [
+            'name'        => $request->name,
+            'category'    => $request->category,
+            'price'       => $request->price,
+            'description' => $request->description,
+            'stock_A'     => $request->stock_A,
+            'stock_B'     => $request->stock_B,
+            'stock_C'     => $request->stock_C,
+        ];
+
+        // 2. Jika user mengunggah gambar baru saat update
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $imageName = $file->getClientOriginalName();
+            
+            // Pindahkan file baru ke public/images
+            $file->move(public_path('images'), $imageName);
+            
+            // Masukkan nama gambar baru ke antrean update
+            $dataToUpdate['image'] = $imageName;
+        }
+
+        // 3. Eksekusi update datanya ke database
+        $product->update($dataToUpdate);
+
         return redirect('/admin/dashboard')->with('success', 'Produk ' . $product->name . ' berhasil diperbarui!');
     }
 
