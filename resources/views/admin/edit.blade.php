@@ -8,7 +8,7 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,600;1,700;1,800;1,900&family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,400;0,600;0,700;0,800;0,900;1,400;1,600;1,700;1,800;1,900&family=Inter:wght@300;400;500;600;700&display=swap');
 
         .font-playfair { font-family: 'Playfair Display', serif; }
         .font-sans { font-family: 'Inter', sans-serif; }
@@ -41,7 +41,6 @@
             border-radius: 12px;
         }
 
-        /* Mematikan spinner naik-turun bawaan browser pada input nomor agar tidak merusak layout */
         input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { 
             -webkit-appearance: none; 
@@ -58,7 +57,7 @@
         
         <div class="mb-6">
             <a href="/admin/dashboard" class="text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:opacity-80">
-                <i class="fas fa-arrow-left text-[10px]"></i> Kembali ke Katalog Utama
+                <i class="fas fa-arrow-left text-[10px]"></i> Kembali ke Dashboard Utama
             </a>
         </div>
 
@@ -74,10 +73,26 @@
                 <p class="text-sm text-white/80 mt-1">Perbarui informasi nama, harga, atau stok penempatan gudang ritel Tambah Jaya.</p>
             </div>
 
+            {{-- BLOK UNTUK MENAMPILKAN ERROR VALIDASI JIKA ADA --}}
+            @if ($errors->any())
+                <div class="bg-rose-950/40 border border-rose-500/40 text-rose-300 p-4 rounded-xl mb-6 text-sm">
+                    <p class="font-bold mb-1">Gagal menyimpan perubahan:</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form method="POST" action="/admin/products/{{ $product->product_id }}" class="space-y-6">
                 @csrf
                 @method('PUT')
                 
+                {{-- Data Hidden agar tidak error di DB --}}
+                <input type="hidden" name="description" value="{{ $product->description }}">
+                <input type="hidden" name="category" value="{{ $product->category }}">
+
                 <div>
                     <label class="block text-xs font-bold tracking-wider uppercase text-white mb-2">Nama Produk</label>
                     <div class="flex items-center w-full bg-[#0A1A12] border border-white/40 rounded-xl px-4 py-3.5 focus-within:border-white transition-all">

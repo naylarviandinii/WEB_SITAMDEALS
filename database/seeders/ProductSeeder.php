@@ -13,6 +13,10 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call([
+            ProductSeeder::class,
+        ]);
+        
         $products = [
             [
                 'product_id' => 1,
