@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         // 2. Memanggil ProductSeeder yang telah dibuat sebelumnya
         $this->call([
             ProductSeeder::class,
-            Userseeder::class,
+            UserSeeder::class,
         ]);
     }
 }
