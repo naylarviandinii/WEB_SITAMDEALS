@@ -8,7 +8,7 @@
 ===================================================  --}}
 <header class="bg-forest pt-12 pb-14 px-[6%] text-center relative overflow-hidden">
     <div class="absolute inset-0 opacity-10"
-         style="background-image: radial-gradient(circle at 70% 50%, #c9a84c 0%, transparent 60%);">
+        style="background-image: radial-gradient(circle at 70% 50%, #c9a84c 0%, transparent 60%);">
     </div>
     <div class="relative z-10">
         <div class="text-[10px] font-bold tracking-[3px] uppercase text-sage mb-3">Tambah Jaya</div>
@@ -26,9 +26,9 @@
         {{-- Form Cari --}}
         <form action="{{ route('products') }}" method="GET" class="flex w-full sm:w-auto sm:flex-1 max-w-lg shadow-lg rounded-2xl overflow-hidden">
             <input type="text" name="search"
-                   placeholder="Cari minyak, beras, susu..."
-                   value="{{ $search ?? '' }}"
-                   class="flex-1 px-6 py-4 bg-white text-sm outline-none text-forest placeholder-gray-400">
+                placeholder="Cari minyak, beras, susu..."
+                value="{{ $search ?? '' }}"
+                class="flex-1 px-6 py-4 bg-white text-sm outline-none text-forest placeholder-gray-400">
             <button type="submit" class="bg-gold text-forest px-7 font-black hover:bg-yellow-400 transition text-lg">
                 🔍
             </button>
@@ -69,14 +69,20 @@
                 {{-- Gambar --}}
                 <div class="h-48 overflow-hidden bg-gray-50 relative">
                     @if($row->image && file_exists(public_path('images/'.$row->image)))
+<<<<<<< HEAD
                         <img src="{{ asset('images/'.$row->image) }}"
                              alt="{{ $row->name }}"
                              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+=======
+                    <img src="{{ asset('images/'.$row->image) }}"
+                        alt="{{ $row->name }}"
+                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+>>>>>>> 16c05823fb733e1be0617e52a9c8459d77d05aa8
                     @else
-                        <div class="w-full h-full flex flex-col items-center justify-center text-gray-300">
-                            <span class="text-5xl">🛒</span>
-                            <span class="text-[10px] mt-2 italic">Gambar Belum Tersedia</span>
-                        </div>
+                    <div class="w-full h-full flex flex-col items-center justify-center text-gray-300">
+                        <span class="text-5xl">🛒</span>
+                        <span class="text-[10px] mt-2 italic">Gambar Belum Tersedia</span>
+                    </div>
                     @endif
 
                     {{-- Badge kategori --}}
@@ -117,12 +123,12 @@
                     {{-- Tombol --}}
                     <div class="mt-4 pt-4 border-t border-gray-50 flex items-center justify-between">
                         <a href="{{ route('products.detail', $row->product_id) }}"
-                           class="text-[10px] font-bold text-forest/40 hover:text-gold transition uppercase tracking-widest">
+                            class="text-[10px] font-bold text-forest/40 hover:text-gold transition uppercase tracking-widest">
                             Lihat Detail
                         </a>
                         @if($totalStok > 0)
                         <a href="{{ route('products.detail', $row->product_id) }}"
-                           class="bg-forest text-white w-10 h-10 rounded-xl hover:bg-gold hover:text-forest transition-all flex items-center justify-center shadow-md font-bold text-sm">
+                            class="bg-forest text-white w-10 h-10 rounded-xl hover:bg-gold hover:text-forest transition-all flex items-center justify-center shadow-md font-bold text-sm">
                             +
                         </a>
                         @else
@@ -144,13 +150,13 @@
             <h3 class="font-playfair text-3xl font-bold text-forest mb-3">Produk Tidak Ditemukan</h3>
             <p class="text-gray-400 text-sm mb-8">
                 @if(!empty($search))
-                    Tidak ada produk dengan kata kunci <strong>"{{ $search }}"</strong>.
+                Tidak ada produk dengan kata kunci <strong>"{{ $search }}"</strong>.
                 @else
-                    Belum ada produk tersedia saat ini.
+                Belum ada produk tersedia saat ini.
                 @endif
             </p>
             <a href="{{ route('products') }}"
-               class="inline-flex items-center gap-2 bg-forest text-white px-8 py-3.5 rounded-2xl font-bold shadow-lg hover:bg-gold hover:text-forest transition">
+                class="inline-flex items-center gap-2 bg-forest text-white px-8 py-3.5 rounded-2xl font-bold shadow-lg hover:bg-gold hover:text-forest transition">
                 <i class="fas fa-redo"></i> Reset Katalog
             </a>
         </div>

@@ -4,9 +4,18 @@
 @push('styles')
 <style>
     input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-    .qty-btn { transition: all 0.2s; }
-    .qty-btn:active { transform: scale(0.88); }
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .qty-btn {
+        transition: all 0.2s;
+    }
+
+    .qty-btn:active {
+        transform: scale(0.88);
+    }
 </style>
 @endpush
 
@@ -29,14 +38,20 @@
         <div class="sticky top-24">
             <div class="rounded-3xl overflow-hidden shadow-xl bg-white p-6 border border-gray-100">
                 @if($product->image && file_exists(public_path('images/'.$product->image)))
+<<<<<<< HEAD
                     <img src="{{ asset('images/'.$product->image) }}"
                          alt="{{ $product->name }}"
                          class="w-full h-[360px] object-contain">
+=======
+                <img src="{{ asset('images/'.$product->image) }}"
+                    alt="{{ $product->name }}"
+                    class="w-full h-[360px] object-contain">
+>>>>>>> 16c05823fb733e1be0617e52a9c8459d77d05aa8
                 @else
-                    <div class="w-full h-[360px] flex flex-col items-center justify-center text-gray-200">
-                        <span class="text-8xl">🛒</span>
-                        <span class="text-xs mt-4 italic text-gray-300">Gambar Belum Tersedia</span>
-                    </div>
+                <div class="w-full h-[360px] flex flex-col items-center justify-center text-gray-200">
+                    <span class="text-8xl">🛒</span>
+                    <span class="text-xs mt-4 italic text-gray-300">Gambar Belum Tersedia</span>
+                </div>
                 @endif
             </div>
 
@@ -44,8 +59,8 @@
             <div class="flex gap-3 mt-4 justify-center">
                 @foreach(['A','B','C'] as $g)
                 @php
-                    $stok = $product->{'stock_'.$g};
-                    $warna = $stok > 0 ? 'bg-sage/10 border-sage/20 text-sage' : 'bg-gray-100 border-gray-200 text-gray-300';
+                $stok = $product->{'stock_'.$g};
+                $warna = $stok > 0 ? 'bg-sage/10 border-sage/20 text-sage' : 'bg-gray-100 border-gray-200 text-gray-300';
                 @endphp
                 <div class="flex-1 border rounded-xl py-2.5 text-center {{ $warna }}">
                     <div class="text-[9px] font-black uppercase tracking-widest">Grade {{ $g }}</div>
@@ -76,7 +91,7 @@
                     Pilih Grade Kondisi Barang
                 </label>
                 <select id="grade" onchange="refreshUI()"
-                        class="w-full border border-mint p-3.5 rounded-2xl focus:ring-2 focus:ring-sage bg-white text-sm shadow-sm outline-none font-medium">
+                    class="w-full border border-mint p-3.5 rounded-2xl focus:ring-2 focus:ring-sage bg-white text-sm shadow-sm outline-none font-medium">
                     <option value="">-- Pilih Grade --</option>
                     <option value="A">Grade A — Lecet Halus (Diskon 15%)</option>
                     <option value="B">Grade B — Penyok / Kardus Rusak (Diskon 30%)</option>
@@ -97,9 +112,9 @@
                     <p class="text-[9px] font-black text-sage uppercase tracking-widest mb-2">Detail per Grade:</p>
                     <div class="grid grid-cols-1 gap-2">
                         @foreach([
-                            ['A', 'Kemasan mulus, sisa event. Diskon 15%.'],
-                            ['B', 'Kardus penyok, expired > 4 bln. Diskon 30%.'],
-                            ['C', 'Kemasan repack, expired dekat. Diskon 50%.'],
+                        ['A', 'Kemasan mulus, sisa event. Diskon 15%.'],
+                        ['B', 'Kardus penyok, expired > 4 bln. Diskon 30%.'],
+                        ['C', 'Kemasan repack, expired dekat. Diskon 50%.'],
                         ] as [$g, $keterangan])
                         <div class="bg-white/60 border border-mint/40 rounded-xl p-2.5 text-[11px] text-gray-500 flex gap-2 items-start">
                             <span class="font-black text-forest bg-gold/20 text-[9px] px-1.5 py-0.5 rounded-md">{{ $g }}</span>
@@ -114,7 +129,7 @@
             <div class="bg-white rounded-2xl shadow-lg p-4 mb-4 flex items-center justify-between border border-gray-100">
                 <div class="flex items-center gap-3">
                     <button type="button" onclick="changeQty(-1)"
-                            class="qty-btn w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center font-bold text-forest shadow-sm">
+                        class="qty-btn w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center font-bold text-forest shadow-sm">
                         <i class="fas fa-minus text-xs"></i>
                     </button>
                     <div class="text-center w-14">
@@ -122,7 +137,7 @@
                         <div id="qty-display" class="font-black text-2xl text-forest">0</div>
                     </div>
                     <button type="button" onclick="changeQty(1)"
-                            class="qty-btn w-10 h-10 bg-sage hover:bg-forest rounded-full flex items-center justify-center font-bold text-white shadow-md">
+                        class="qty-btn w-10 h-10 bg-sage hover:bg-forest rounded-full flex items-center justify-center font-bold text-white shadow-md">
                         <i class="fas fa-plus text-xs"></i>
                     </button>
                 </div>
@@ -136,15 +151,15 @@
             <form action="{{ route('cart.add') }}" method="POST" id="order-form">
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product->product_id }}">
-                <input type="hidden" name="grade"      id="h-grade">
-                <input type="hidden" name="qty"        id="h-qty" value="0">
+                <input type="hidden" name="grade" id="h-grade">
+                <input type="hidden" name="qty" id="h-qty" value="0">
                 <input type="hidden" name="unit_price" id="h-unit-price" value="{{ $product->price }}">
-                <input type="hidden" name="buy_now"    id="h-buy-now" value="0">
+                <input type="hidden" name="buy_now" id="h-buy-now" value="0">
 
                 <div class="flex flex-col gap-3">
                     {{-- Button: Tambah ke Keranjang --}}
                     <button type="submit" onclick="setBuyNow(0)"
-                            class="w-full bg-gold text-forest font-black py-4 rounded-2xl shadow-lg hover:bg-yellow-400 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-3 text-base">
+                        class="w-full bg-gold text-forest font-black py-4 rounded-2xl shadow-lg hover:bg-yellow-400 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-3 text-base">
                         <i class="fas fa-cart-plus"></i>
                         Tambah ke Keranjang
                         <span id="checkout-qty" class="bg-forest/20 text-xs px-2 py-0.5 rounded-full">0 item</span>
@@ -152,7 +167,7 @@
 
                     {{-- Button: Beli Sekarang --}}
                     <button type="submit" onclick="setBuyNow(1)"
-                            class="w-full bg-forest text-white font-black py-4 rounded-2xl shadow-lg hover:bg-[#06120d] hover:-translate-y-0.5 transition-all flex items-center justify-center gap-3 text-base">
+                        class="w-full bg-forest text-white font-black py-4 rounded-2xl shadow-lg hover:bg-[#06120d] hover:-translate-y-0.5 transition-all flex items-center justify-center gap-3 text-base">
                         <i class="fas fa-bolt"></i>
                         Beli Sekarang
                     </button>
@@ -162,7 +177,7 @@
             {{-- Tombol Lihat Keranjang --}}
             <div class="mt-4 text-center">
                 <a href="{{ route('cart') }}"
-                   class="text-xs text-gray-400 hover:text-forest transition font-semibold">
+                    class="text-xs text-gray-400 hover:text-forest transition font-semibold">
                     <i class="fas fa-shopping-cart mr-1"></i>Lihat Keranjang →
                 </a>
             </div>
@@ -174,71 +189,94 @@
 
 @push('scripts')
 <script>
-const stocks = {
-    "A": {{ intval($product->stock_A) }},
-    "B": {{ intval($product->stock_B) }},
-    "C": {{ intval($product->stock_C) }},
-};
-const basePrice = {{ intval($product->price) }};
-let qty = 0;
+    const stocks = {
+        "A": {
+            {
+                intval($product - > stock_A)
+            }
+        },
+        "B": {
+            {
+                intval($product - > stock_B)
+            }
+        },
+        "C": {
+            {
+                intval($product - > stock_C)
+            }
+        },
+    };
+    const basePrice = {
+        {
+            intval($product - > price)
+        }
+    };
+    let qty = 0;
 
-function refreshUI() {
-    const g    = document.getElementById('grade').value;
-    const sdEl = document.getElementById('stock-display');
-    const scEl = document.getElementById('stock-count');
+    function refreshUI() {
+        const g = document.getElementById('grade').value;
+        const sdEl = document.getElementById('stock-display');
+        const scEl = document.getElementById('stock-count');
 
-    if (g && stocks[g] !== undefined) {
-        sdEl.classList.remove('hidden');
-        scEl.innerText = stocks[g];
-        if (qty > stocks[g]) qty = stocks[g];
-    } else {
-        sdEl.classList.add('hidden');
+        if (g && stocks[g] !== undefined) {
+            sdEl.classList.remove('hidden');
+            scEl.innerText = stocks[g];
+            if (qty > stocks[g]) qty = stocks[g];
+        } else {
+            sdEl.classList.add('hidden');
+        }
+
+        const multiplier = {
+            A: 0.85,
+            B: 0.70,
+            C: 0.50
+        } [g] ?? 1;
+        const unitPrice = Math.floor(basePrice * multiplier);
+        const subtotal = unitPrice * qty;
+
+        document.getElementById('price-display').innerText = 'Rp ' + unitPrice.toLocaleString('id-ID');
+        document.getElementById('qty-display').innerText = qty;
+        document.getElementById('subtotal-display').innerText = 'Rp ' + subtotal.toLocaleString('id-ID');
+        document.getElementById('checkout-qty').innerText = qty + ' item';
+
+        document.getElementById('h-grade').value = g;
+        document.getElementById('h-qty').value = qty;
+        document.getElementById('h-unit-price').value = unitPrice;
     }
 
-    const multiplier = { A: 0.85, B: 0.70, C: 0.50 }[g] ?? 1;
-    const unitPrice  = Math.floor(basePrice * multiplier);
-    const subtotal   = unitPrice * qty;
+    function changeQty(delta) {
+        const g = document.getElementById('grade').value;
+        if (!g) {
+            alert('Pilih Grade dulu!');
+            return;
+        }
 
-    document.getElementById('price-display').innerText   = 'Rp ' + unitPrice.toLocaleString('id-ID');
-    document.getElementById('qty-display').innerText     = qty;
-    document.getElementById('subtotal-display').innerText = 'Rp ' + subtotal.toLocaleString('id-ID');
-    document.getElementById('checkout-qty').innerText    = qty + ' item';
-
-    document.getElementById('h-grade').value      = g;
-    document.getElementById('h-qty').value        = qty;
-    document.getElementById('h-unit-price').value = unitPrice;
-}
-
-function changeQty(delta) {
-    const g = document.getElementById('grade').value;
-    if (!g) { alert('Pilih Grade dulu!'); return; }
-
-    let next = qty + delta;
-    if (next < 0) next = 0;
-    if (next > stocks[g]) {
-        alert('Stok Grade ' + g + ' hanya ' + stocks[g] + ' unit!');
-        next = stocks[g];
+        let next = qty + delta;
+        if (next < 0) next = 0;
+        if (next > stocks[g]) {
+            alert('Stok Grade ' + g + ' hanya ' + stocks[g] + ' unit!');
+            next = stocks[g];
+        }
+        qty = next;
+        refreshUI();
     }
-    qty = next;
-    refreshUI();
-}
 
-function setBuyNow(val) {
-    document.getElementById('h-buy-now').value = val;
-}
+    function setBuyNow(val) {
+        document.getElementById('h-buy-now').value = val;
+    }
 
-document.getElementById('order-form').addEventListener('submit', function(e) {
-    if (!document.getElementById('grade').value) { 
-        alert('Pilih Grade dulu!'); 
-        e.preventDefault(); 
-        return false; 
-    }
-    if (qty <= 0) { 
-        alert('Qty masih 0!'); 
-        e.preventDefault(); 
-        return false; 
-    }
-    return true;
-});
+    document.getElementById('order-form').addEventListener('submit', function(e) {
+        if (!document.getElementById('grade').value) {
+            alert('Pilih Grade dulu!');
+            e.preventDefault();
+            return false;
+        }
+        if (qty <= 0) {
+            alert('Qty masih 0!');
+            e.preventDefault();
+            return false;
+        }
+        return true;
+    });
 </script>
 @endpush
