@@ -69,9 +69,15 @@
                 {{-- Gambar --}}
                 <div class="h-48 overflow-hidden bg-gray-50 relative">
                     @if($row->image && file_exists(public_path('images/'.$row->image)))
+<<<<<<< HEAD
+                        <img src="{{ asset('images/'.$row->image) }}"
+                             alt="{{ $row->name }}"
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+=======
                     <img src="{{ asset('images/'.$row->image) }}"
                         alt="{{ $row->name }}"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+>>>>>>> 16c05823fb733e1be0617e52a9c8459d77d05aa8
                     @else
                     <div class="w-full h-full flex flex-col items-center justify-center text-gray-300">
                         <span class="text-5xl">🛒</span>
