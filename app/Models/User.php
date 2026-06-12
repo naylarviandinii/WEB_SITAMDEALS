@@ -19,9 +19,14 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $primaryKey = 'user_id';
-protected $fillable = ['name', 'email', 'password', 'role'];
+    protected $fillable = ['name', 'email', 'password', 'role'];
 
-public function carts() { return $this->hasMany(Cart::class, 'user_id', 'user_id'); }
-public function orders() { return $this->hasMany(Order::class, 'user_id', 'user_id'); }
-    
+    public function carts()
+    {
+        return $this->hasMany(Cart::class, 'user_id', 'user_id');
+    }
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'user_id', 'user_id');
+    }
 }
