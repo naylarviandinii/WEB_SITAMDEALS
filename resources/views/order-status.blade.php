@@ -40,7 +40,7 @@
                     {{ $order->status == 'pending' ? 'bg-step-active' : 'bg-step-done' }}">
                     @if($order->status != 'pending') <i class="fas fa-check"></i> @else 1 @endif
                 </div>
-                <p class="text-xs uppercase tracking-wider {{ $order->status == 'pending' ? 'step-active' : 'step-done' }}">Pesanan Diterima</p>
+                <p class="text-xs uppercase tracking-wider {{ $order->status == 'pending' ? 'step-active' : 'step-done' }}">Diterima</p>
             </div>
 
             <div class="flex flex-col items-center text-center">
@@ -48,7 +48,7 @@
                     {{ $order->status == 'diterima' ? 'bg-step-active' : (in_array($order->status, ['diproses', 'siap_diambil', 'diambil_dibayar', 'selesai']) ? 'bg-step-done' : 'bg-step-waiting') }}">
                     @if(in_array($order->status, ['diproses', 'siap_diambil', 'diambil_dibayar', 'selesai'])) <i class="fas fa-check"></i> @else 2 @endif
                 </div>
-                <p class="text-xs uppercase tracking-wider {{ $order->status == 'diterima' ? 'step-active' : (in_array($order->status, ['diproses', 'siap_diambil', 'diambil_dibayar', 'selesai']) ? 'step-done' : 'step-waiting') }}">Pesanan Diproses</p>
+                <p class="text-xs uppercase tracking-wider {{ $order->status == 'diterima' ? 'step-active' : (in_array($order->status, ['diproses', 'siap_diambil', 'diambil_dibayar', 'selesai']) ? 'step-done' : 'step-waiting') }}">Diproses</p>
             </div>
 
             <div class="flex flex-col items-center text-center">
@@ -56,7 +56,7 @@
                     {{ $order->status == 'diproses' ? 'bg-step-active' : (in_array($order->status, ['siap_diambil', 'diambil_dibayar', 'selesai']) ? 'bg-step-done' : 'bg-step-waiting') }}">
                     @if(in_array($order->status, ['siap_diambil', 'diambil_dibayar', 'selesai'])) <i class="fas fa-check"></i> @else 3 @endif
                 </div>
-                <p class="text-xs uppercase tracking-wider {{ $order->status == 'diproses' ? 'step-active' : (in_array($order->status, ['siap_diambil', 'diambil_dibayar', 'selesai']) ? 'step-done' : 'step-waiting') }}">Siap Diambil dan Lakukan Pembayaran</p>
+                <p class="text-xs uppercase tracking-wider {{ $order->status == 'diproses' ? 'step-active' : (in_array($order->status, ['siap_diambil', 'diambil_dibayar', 'selesai']) ? 'step-done' : 'step-waiting') }}">Siap Diambil</p>
             </div>
 
             <div class="flex flex-col items-center text-center">
@@ -64,7 +64,7 @@
                     {{ $order->status == 'diambil_dibayar' ? 'bg-step-active' : ($order->status == 'selesai' ? 'bg-step-done' : 'bg-step-waiting') }}">
                     @if(in_array($order->status, ['diambil_dibayar', 'selesai'])) <i class="fas fa-check"></i> @else 4 @endif
                 </div>
-                <p class="text-xs uppercase tracking-wider {{ $order->status == 'diambil_dibayar' ? 'step-active' : ($order->status == 'selesai' ? 'step-done' : 'step-waiting') }}">Pesanan Selesai</p>
+                <p class="text-xs uppercase tracking-wider {{ $order->status == 'diambil_dibayar' ? 'step-active' : ($order->status == 'selesai' ? 'step-done' : 'step-waiting') }}">Ambil & Bayar</p>
             </div>
 
         </div>
@@ -92,7 +92,7 @@
             </div>
             <div>
                 <h4 class="text-xl font-bold text-white font-playfair">Invoice Tersedia!</h4>
-                <p class="text-xs text-white/70 mt-1">Terima kasih telah berbelanja di SiTamDeals.</p>
+                <p class="text-xs text-white/70 mt-1">Pesanan siap diambil. Silakan tunjukkan rincian invoice kepada kasir untuk pembayaran.</p>
             </div>
             
             <a href="/orders/{{ $order->id }}/invoice-customer" target="_blank"
