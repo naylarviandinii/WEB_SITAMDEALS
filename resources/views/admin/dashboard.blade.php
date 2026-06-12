@@ -107,7 +107,13 @@
                     </div>
                     <div class="flex flex-col items-end gap-1 font-mono text-[10px] text-white/60">
                         <span class="bg-rose-500/20 border border-rose-500/50 text-rose-300 font-bold px-2.5 py-1 rounded-md text-xs">
-                            A: {{ $lp->stock_A }} | B: {{ $lp->stock_B }} | C: {{ $lp->stock_C }}
+                        @if ($lp->stock_A <=10)
+                            A: {{ $lp->stock_A }}
+                        @elseif ($lp->stock_B <=10)
+                            B: {{ $lp->stock_B }}
+                        @elseif ($lp->stock_C <=10)
+                            C: {{ $lp->stock_C }}
+                        @endif
                         </span>
                     </div>
                 </div>
