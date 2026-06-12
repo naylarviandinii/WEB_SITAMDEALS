@@ -7,24 +7,49 @@
         background-color: #050d09 !important;
         color: #ffffff;
     }
+
     .glass-panel {
-        background-color: #0A1A12; 
+        background-color: #0A1A12;
         border: 1px solid rgba(255, 255, 255, 0.1);
     }
+
     /* State Style Pelacakan Sekuensial */
-    .step-active { color: #e8c96a; font-weight: 700; }
-    .step-done { color: #10b981; }
-    .step-waiting { color: rgba(255, 255, 255, 0.2); }
-    
-    .bg-step-active { background-color: #e8c96a; color: #0e2118; box-shadow: 0 0 15px rgba(232, 201, 106, 0.4); }
-    .bg-step-done { background-color: rgba(16, 185, 129, 0.2); border: 2px solid #10b981; color: #10b981; }
-    .bg-step-waiting { background-color: rgba(255, 255, 255, 0.05); border: 2px solid rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.2); }
+    .step-active {
+        color: #e8c96a;
+        font-weight: 700;
+    }
+
+    .step-done {
+        color: #10b981;
+    }
+
+    .step-waiting {
+        color: rgba(255, 255, 255, 0.2);
+    }
+
+    .bg-step-active {
+        background-color: #e8c96a;
+        color: #0e2118;
+        box-shadow: 0 0 15px rgba(232, 201, 106, 0.4);
+    }
+
+    .bg-step-done {
+        background-color: rgba(16, 185, 129, 0.2);
+        border: 2px solid #10b981;
+        color: #10b981;
+    }
+
+    .bg-step-waiting {
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.2);
+    }
 </style>
 
 <div class="max-w-4xl mx-auto py-16 px-6 font-sans">
-    
+
     <div class="glass-panel rounded-2xl p-8 md:p-10 shadow-2xl relative overflow-hidden">
-        
+
         <div class="text-center border-b border-white/10 pb-8 mb-10">
             <span class="text-[10px] border border-white/30 px-3 py-1 rounded-full font-mono uppercase tracking-widest text-white/70">
                 Nota Transaksi: #ORDER-{{ $order->id }}
@@ -34,7 +59,7 @@
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6 relative z-10 mb-12">
-            
+
             {{-- STEP 1: PENDING (DITERIMA) --}}
             <div class="flex flex-col items-center text-center">
                 <div class="w-12 h-12 rounded-full flex items-center justify-center text-base mb-3 font-mono font-bold
@@ -83,9 +108,9 @@
                 <h4 class="text-xl font-bold text-white font-playfair">Pesanan Anda Telah Selesai!</h4>
                 <p class="text-xs text-white/70 mt-1">Pembayaran terverifikasi lunas dan barang telah berhasil diserahterimakan.</p>
             </div>
-            
+
             <a href="/orders/{{ $order->id }}/invoice-customer" target="_blank"
-               class="mt-2 inline-flex items-center justify-center gap-2 bg-[#e8c96a] text-[#0e2118] font-bold text-xs uppercase tracking-wider px-8 py-3.5 rounded-xl shadow-md hover:opacity-90 transition-all">
+                class="mt-2 inline-flex items-center justify-center gap-2 bg-[#e8c96a] text-[#0e2118] font-bold text-xs uppercase tracking-wider px-8 py-3.5 rounded-xl shadow-md hover:opacity-90 transition-all">
                 <i class="fas fa-file-invoice text-[11px]"></i> Lihat Invoice Resmi
             </a>
         </div>
@@ -98,9 +123,10 @@
                 <h4 class="text-xl font-bold text-white font-playfair">Invoice Tersedia!</h4>
                 <p class="text-xs text-white/70 mt-1">Pesanan siap diambil di gerai. Silakan tunjukkan rincian invoice kepada kasir untuk menyelesaikan pembayaran.</p>
             </div>
-            
-            <a href="/orders/{{ $order->id }}/invoice-customer" target="_blank"
-               class="mt-2 inline-flex items-center justify-center gap-2 bg-[#e8c96a] text-[#0e2118] font-bold text-xs uppercase tracking-wider px-8 py-3.5 rounded-xl shadow-md hover:opacity-90 transition-all">
+
+            <!-- <a href="/admin/orders/{{ $order->id }}/invoice" target="_blank" -->
+            <a href="{{route('orders.invoice', $order->id)}}" target="_blank"
+                class="mt-2 inline-flex items-center justify-center gap-2 bg-[#e8c96a] text-[#0e2118] font-bold text-xs uppercase tracking-wider px-8 py-3.5 rounded-xl shadow-md hover:opacity-90 transition-all">
                 <i class="fas fa-file-invoice text-[11px]"></i> Lihat Invoice
             </a>
         </div>

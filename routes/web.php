@@ -2,10 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
-    AuthController, 
-    ProductController, 
-    CartController, 
-    OrderController, 
+    AuthController,
+    ProductController,
+    CartController,
+    OrderController,
     ProfileController,
     AdminProductController, // ← Sudah di-import
     KasirOrderController    // ← Sudah di-import
@@ -31,7 +31,7 @@ Route::post('/logout',    [AuthController::class, 'logout'])->name('logout');
 // ==========================================
 // Kita gunakan middleware 'role' tanpa parameter, artinya asal sudah login (role apa saja) bisa masuk.
 Route::middleware(['role'])->group(function () {
-    
+
     // Beranda & Katalog Produk Umum
     Route::get('/',             [ProductController::class, 'home'])->name('home');
     Route::get('/products',      [ProductController::class, 'index'])->name('products');
@@ -67,13 +67,13 @@ Route::middleware(['role'])->group(function () {
     // 4. KELOMPOK AKSES KHUSUS: ADMIN
     // ==========================================
     Route::middleware(['role:admin'])->group(function () {
-        Route::get('/admin/dashboard',       [AdminProductController::class, 'dashboard']); 
+        Route::get('/admin/dashboard',       [AdminProductController::class, 'dashboard']);
         Route::get('/admin/products/create', [AdminProductController::class, 'create']);
         Route::post('/admin/products',        [AdminProductController::class, 'store']);
         Route::get('/admin/products/{id}/edit', [AdminProductController::class, 'edit']);
         Route::put('/admin/products/{id}',    [AdminProductController::class, 'update']);
         Route::delete('/admin/products/{id}', [AdminProductController::class, 'destroy']);
     });
-Route::get('/orders/{id}/status', [CartController::class, 'showStatus'])->name('orders.status');
-Route::get('/orders/{id}/invoice-customer', [App\Http\Controllers\KasirOrderController::class, 'invoice'])->name('orders.invoice');
+    Route::get('/orders/{id}/status', [CartController::class, 'showStatus'])->name('orders.status');
+    // Route::get('/orders/{id}/invoice-customer', [KasirOrderController::class, 'invoice'])->name('orders.invoice-customer');
 });

@@ -19,6 +19,7 @@ class KasirOrderController extends Controller
     public function invoice($id)
     {
         // 1. Mengambil order beserta items dan produk terkait
+        /** @var \App\Models\Order $order */
         $order = Order::with('items.product')->findOrFail($id);
         
         // 2. Hitung total belanja dari seluruh item di dalam order ini
@@ -39,6 +40,7 @@ class KasirOrderController extends Controller
         ]);
 
         // 2. Cari order-nya
+        /** @var \App\Models\Order $order */
         $order = Order::findOrFail($id);
 
         // 3. Update statusnya

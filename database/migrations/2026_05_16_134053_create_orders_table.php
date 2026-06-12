@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users', 'user_id');
             $table->nullableMorphs('kasir');
-            $table->enum('status', ['pending', 'diproses','diterima_dibayar', 'selesai'])->default('pending');
+            $table->enum('status', ['pending', 'diproses','diambil_dibayar', 'selesai'])->default('pending');
             $table->timestamps();
         });
     }
