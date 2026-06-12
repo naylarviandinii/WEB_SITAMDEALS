@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+
 class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
@@ -24,6 +25,7 @@ class DatabaseSeeder extends Seeder
         // 2. Memanggil ProductSeeder yang telah dibuat sebelumnya
         $this->call([
             ProductSeeder::class,
+            Userseeder::class,
         ]);
     }
 }
