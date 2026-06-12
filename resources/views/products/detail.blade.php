@@ -28,8 +28,8 @@
         {{-- ===== KIRI: GAMBAR ===== --}}
         <div class="sticky top-24">
             <div class="rounded-3xl overflow-hidden shadow-xl bg-white p-6 border border-gray-100">
-                @if($product->image && file_exists(public_path('img/'.$product->image)))
-                    <img src="{{ asset('img/'.$product->image) }}"
+                @if($product->image && file_exists(public_path('images/'.$product->image)))
+                    <img src="{{ asset('images/'.$product->image) }}"
                          alt="{{ $product->name }}"
                          class="w-full h-[360px] object-contain">
                 @else

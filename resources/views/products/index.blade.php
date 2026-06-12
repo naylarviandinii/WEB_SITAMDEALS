@@ -68,8 +68,8 @@
 
                 {{-- Gambar --}}
                 <div class="h-48 overflow-hidden bg-gray-50 relative">
-                    @if($row->image && file_exists(public_path('img/'.$row->image)))
-                        <img src="{{ asset('img/'.$row->image) }}"
+                    @if($row->image && file_exists(public_path('images/'.$row->image)))
+                        <img src="{{ asset('images/'.$row->image) }}"
                              alt="{{ $row->name }}"
                              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     @else
