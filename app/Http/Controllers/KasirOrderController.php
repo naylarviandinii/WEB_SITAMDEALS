@@ -30,15 +30,22 @@ class KasirOrderController extends Controller
     }
 
     // MEMPERBARUI STATUS PESANAN
-    public function updateStatus(Request $request, $orderId)
+    public function updateStatus(Request $request, $id)
     {
-        $order = Order::findOrFail($orderId);
-        
-        // Cukup update status langsung ke nilai yang diklik
-        // Tanpa if/else yang mengecek status sebelumnya
-        $order->status = $request->status; 
-        $order->save();
+        // 1. Validasi input status yang masuk dari form kasir
+        // Pastikan nilainya harus sesuai dengan isi ENUM/aturan di database kamu
+        $request->validate([
+            'status' => 'required|string|in:pending,proses,selesai,diambil_dibayar', // Sesuaikan dengan enum DB-mu
+        ]);
 
-        return redirect()->back()->with('success', 'Status berhasil diperbarui!');
+        // 2. Cari order-nya
+        $order = Order::findOrFail($id);
+
+        // 3. Update statusnya
+        $order->update([
+            'status' => $request->status
+        ]);
+
+        return redirect()->back()->with('success', 'Status pesanan berhasil diperbarui!');
     }
 }

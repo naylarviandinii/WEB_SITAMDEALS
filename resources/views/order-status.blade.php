@@ -35,6 +35,7 @@
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6 relative z-10 mb-12">
             
+            {{-- STEP 1: PENDING (DITERIMA) --}}
             <div class="flex flex-col items-center text-center">
                 <div class="w-12 h-12 rounded-full flex items-center justify-center text-base mb-3 font-mono font-bold
                     {{ $order->status == 'pending' ? 'bg-step-active' : 'bg-step-done' }}">
@@ -43,33 +44,36 @@
                 <p class="text-xs uppercase tracking-wider {{ $order->status == 'pending' ? 'step-active' : 'step-done' }}">Diterima</p>
             </div>
 
+            {{-- STEP 2: DIPROSES --}}
             <div class="flex flex-col items-center text-center">
                 <div class="w-12 h-12 rounded-full flex items-center justify-center text-base mb-3 font-mono font-bold
-                    {{ $order->status == 'diterima' ? 'bg-step-active' : (in_array($order->status, ['diproses', 'siap_diambil', 'diambil_dibayar', 'selesai']) ? 'bg-step-done' : 'bg-step-waiting') }}">
-                    @if(in_array($order->status, ['diproses', 'siap_diambil', 'diambil_dibayar', 'selesai'])) <i class="fas fa-check"></i> @else 2 @endif
+                    {{ $order->status == 'proses' ? 'bg-step-active' : (in_array($order->status, ['diambil_dibayar', 'selesai']) ? 'bg-step-done' : 'bg-step-waiting') }}">
+                    @if(in_array($order->status, ['diambil_dibayar', 'selesai'])) <i class="fas fa-check"></i> @else 2 @endif
                 </div>
-                <p class="text-xs uppercase tracking-wider {{ $order->status == 'diterima' ? 'step-active' : (in_array($order->status, ['diproses', 'siap_diambil', 'diambil_dibayar', 'selesai']) ? 'step-done' : 'step-waiting') }}">Diproses</p>
+                <p class="text-xs uppercase tracking-wider {{ $order->status == 'proses' ? 'step-active' : (in_array($order->status, ['diambil_dibayar', 'selesai']) ? 'step-done' : 'step-waiting') }}">Diproses</p>
             </div>
 
-            <div class="flex flex-col items-center text-center">
-                <div class="w-12 h-12 rounded-full flex items-center justify-center text-base mb-3 font-mono font-bold
-                    {{ $order->status == 'diproses' ? 'bg-step-active' : (in_array($order->status, ['siap_diambil', 'diambil_dibayar', 'selesai']) ? 'bg-step-done' : 'bg-step-waiting') }}">
-                    @if(in_array($order->status, ['siap_diambil', 'diambil_dibayar', 'selesai'])) <i class="fas fa-check"></i> @else 3 @endif
-                </div>
-                <p class="text-xs uppercase tracking-wider {{ $order->status == 'diproses' ? 'step-active' : (in_array($order->status, ['siap_diambil', 'diambil_dibayar', 'selesai']) ? 'step-done' : 'step-waiting') }}">Siap Diambil</p>
-            </div>
-
+            {{-- STEP 3: AMBIL & BAYAR --}}
             <div class="flex flex-col items-center text-center">
                 <div class="w-12 h-12 rounded-full flex items-center justify-center text-base mb-3 font-mono font-bold
                     {{ $order->status == 'diambil_dibayar' ? 'bg-step-active' : ($order->status == 'selesai' ? 'bg-step-done' : 'bg-step-waiting') }}">
-                    @if(in_array($order->status, ['diambil_dibayar', 'selesai'])) <i class="fas fa-check"></i> @else 4 @endif
+                    @if($order->status == 'selesai') <i class="fas fa-check"></i> @else 3 @endif
                 </div>
                 <p class="text-xs uppercase tracking-wider {{ $order->status == 'diambil_dibayar' ? 'step-active' : ($order->status == 'selesai' ? 'step-done' : 'step-waiting') }}">Ambil & Bayar</p>
             </div>
 
+            {{-- STEP 4: SELESAI --}}
+            <div class="flex flex-col items-center text-center">
+                <div class="w-12 h-12 rounded-full flex items-center justify-center text-base mb-3 font-mono font-bold
+                    {{ $order->status == 'selesai' ? 'bg-step-active' : 'bg-step-waiting' }}">
+                    4
+                </div>
+                <p class="text-xs uppercase tracking-wider {{ $order->status == 'selesai' ? 'step-active' : 'step-waiting' }}">Selesai</p>
+            </div>
+
         </div>
 
-        {{-- Logika Penentu: Hanya tampil jika sudah diklik cetak invoice oleh kasir (diambil_dibayar) ATAU sudah selesai --}}
+        {{-- AREA NOTIFIKASI DINAMIS --}}
         @if($order->status == 'selesai')
         <div class="bg-emerald-950/40 border border-emerald-500/30 rounded-2xl p-6 text-center flex flex-col items-center justify-center gap-4">
             <div class="w-14 h-14 bg-emerald-500 text-[#050d09] rounded-full flex items-center justify-center text-2xl shadow-lg">
@@ -81,8 +85,8 @@
             </div>
             
             <a href="/orders/{{ $order->id }}/invoice-customer" target="_blank"
-               class="mt-2 inline-flex items-center justify-center gap-2 bg-[#e8c96a] text-[#0e2118] font-bold text-xs uppercase tracking-wider px-8 py-3.5 rounded-xl shadow-md hover:bg-c9a84c transition-all">
-                <i class="fas fa-file-invoice text-[11px]"></i> Lihat Invoice
+               class="mt-2 inline-flex items-center justify-center gap-2 bg-[#e8c96a] text-[#0e2118] font-bold text-xs uppercase tracking-wider px-8 py-3.5 rounded-xl shadow-md hover:opacity-90 transition-all">
+                <i class="fas fa-file-invoice text-[11px]"></i> Lihat Invoice Resmi
             </a>
         </div>
         @elseif($order->status == 'diambil_dibayar')
@@ -92,19 +96,19 @@
             </div>
             <div>
                 <h4 class="text-xl font-bold text-white font-playfair">Invoice Tersedia!</h4>
-                <p class="text-xs text-white/70 mt-1">Pesanan siap diambil. Silakan tunjukkan rincian invoice kepada kasir untuk pembayaran.</p>
+                <p class="text-xs text-white/70 mt-1">Pesanan siap diambil di gerai. Silakan tunjukkan rincian invoice kepada kasir untuk menyelesaikan pembayaran.</p>
             </div>
             
             <a href="/orders/{{ $order->id }}/invoice-customer" target="_blank"
-               class="mt-2 inline-flex items-center justify-center gap-2 bg-[#e8c96a] text-[#0e2118] font-bold text-xs uppercase tracking-wider px-8 py-3.5 rounded-xl shadow-md hover:bg-c9a84c transition-all">
+               class="mt-2 inline-flex items-center justify-center gap-2 bg-[#e8c96a] text-[#0e2118] font-bold text-xs uppercase tracking-wider px-8 py-3.5 rounded-xl shadow-md hover:opacity-90 transition-all">
                 <i class="fas fa-file-invoice text-[11px]"></i> Lihat Invoice
             </a>
         </div>
         @else
-        {{-- Kondisi ini aktif jika statusnya di luar 'selesai' atau 'diambil_dibayar' --}}
+        {{-- Aktif jika status masih 'pending' atau 'proses' --}}
         <div class="bg-white/[0.02] border border-white/10 rounded-2xl p-6 flex items-center justify-center gap-3">
             <i class="fas fa-circle-notch animate-spin text-[#e8c96a] text-sm"></i>
-            <p class="text-xs text-white/70 tracking-wide">Mohon tunggu, kasir sedang memperbarui rincian operasional item Anda...</p>
+            <p class="text-xs text-white/70 tracking-wide">Mohon tunggu, tim Tambah Jaya sedang memproses kelengkapan item Anda...</p>
         </div>
         @endif
 
