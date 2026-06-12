@@ -184,29 +184,12 @@
 @push('scripts')
 <script>
     const stocks = {
-        "A": {
-            {
-                intval($product - > stock_A)
-            }
-        },
-        "B": {
-            {
-                intval($product - > stock_B)
-            }
-        },
-        "C": {
-            {
-                intval($product - > stock_C)
-            }
-        },
+        "A": {{ intval($product->stock_A) }},
+        "B": {{ intval($product->stock_B) }},
+        "C": {{ intval($product->stock_C) }}
     };
-    const basePrice = {
-        {
-            intval($product - > price)
-        }
-    };
+const basePrice = {{ intval($product->price) }};
     let qty = 0;
-
     function refreshUI() {
         const g = document.getElementById('grade').value;
         const sdEl = document.getElementById('stock-display');
