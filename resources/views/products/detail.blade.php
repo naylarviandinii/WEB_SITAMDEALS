@@ -38,9 +38,15 @@
         <div class="sticky top-24">
             <div class="rounded-3xl overflow-hidden shadow-xl bg-white p-6 border border-gray-100">
                 @if($product->image && file_exists(public_path('images/'.$product->image)))
+<<<<<<< HEAD
+                    <img src="{{ asset('images/'.$product->image) }}"
+                         alt="{{ $product->name }}"
+                         class="w-full h-[360px] object-contain">
+=======
                 <img src="{{ asset('images/'.$product->image) }}"
                     alt="{{ $product->name }}"
                     class="w-full h-[360px] object-contain">
+>>>>>>> 16c05823fb733e1be0617e52a9c8459d77d05aa8
                 @else
                 <div class="w-full h-[360px] flex flex-col items-center justify-center text-gray-200">
                     <span class="text-8xl">🛒</span>
