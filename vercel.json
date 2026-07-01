@@ -4,21 +4,7 @@
     "api/index.php": {
       "runtime": "vercel-php@0.8.0"
     }
-  },
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "public"
-      }
-    },
-    {
-      "src": "api/index.php",
-      "use": "vercel-php@0.8.0"
-    }
-  ],
-  "routes": [
+  }, "routes": [
     {
       "src": "/build/(.*)",
       "dest": "/public/build/$1"
